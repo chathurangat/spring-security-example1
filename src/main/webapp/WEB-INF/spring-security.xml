@@ -9,7 +9,10 @@
 
     <security:http access-denied-page="/auth/denied" auto-config="true" use-expressions="true">
 
+        <!--the following URL can be accessed by any user(both authenticated and non authenticated)-->
         <security:intercept-url pattern="/auth/login" access="permitAll"/>
+
+        <!--the following URL can be accessed only by the users who are having the user role called ROLE_ADMIN-->
         <security:intercept-url pattern="/user/admin/*" access="hasRole('ROLE_ADMIN')"/>
 
         <security:form-login login-page="/auth/login"
