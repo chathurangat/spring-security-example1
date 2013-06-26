@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http access-denied-page="/auth/denied" auto-config="true" use-expressions="true">
+
+        <security:intercept-url pattern="/auth/login" access="permitAll"/>
+        <security:intercept-url pattern="/user/admin/*" access="hasRole('ROLE_ADMIN')"/>
+
+        <security:form-login login-page="/auth/login"
+                             default-target-url="/user/home"
+                             authentication-failure-url="/auth/login"/>
+
+        <security:logout logout-success-url="/auth/login"
+                         logout-url="/auth/logout"
+                         invalidate-session="true"/>
+    </security:http>
+
+    <!--there can be many authentication providers-->
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider user-service-ref="userDetailsService">
+            <security:password-encoder ref="md5PasswordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <!--im-memory user details service with username and md5 encrypted passwords -->
+    <security:user-service id="userDetailsService">
+        <!--username: chathuranga-->
+        <!--password: admin-->
+        <security:user name="chathuranga" password="21232f297a57a5a743894a0e4a801fc3" authorities="ROLE_USER"/>
+        <!--username: darshana-->
+        <!--password: admin-->
+        <security:user name="darshana" password="21232f297a57a5a743894a0e4a801fc3" authorities="ROLE_USER,ROLE_ADMIN"/>
+    </security:user-service>
+
+    <bean id="md5PasswordEncoder"  class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>
+
+</beans>
