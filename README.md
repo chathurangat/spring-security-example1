@@ -6,6 +6,7 @@ In this article following areas will be considered
 ==================================================
 
 In-Memory UserDetailService (XML based user store)
+and
 URL based access control
 
 Author
